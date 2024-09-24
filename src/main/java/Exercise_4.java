@@ -24,9 +24,11 @@ public class Exercise_4 {
         }
     }
 
+    // -- provided helper function -- //
     static <T> List<T> rest(List<T> l) {
         return l.subList(1, l.size());
     }
+    // -- end helper function -- //
 
     public static Integer h(Integer acc, List<Integer> a, Integer b, Foo foo, Bar<Integer, Integer> bar) {
         if (a.isEmpty()) {
