@@ -16,6 +16,7 @@ public class Exercise_3 {
             key = t;
         }
     }
+
     // -- begin exercise -- //
     public static class Recursive {
         public Integer bar(ListItem<Integer> l2, Integer acc, Integer v) {
@@ -43,51 +44,82 @@ public class Exercise_3 {
 
     public static class Iterative {
         public Integer bar(ListItem<Integer> l2, Integer acc, Integer v) {
-            for (ListItem<Integer> item = l2; l2 != null; l2 = l2.next) {
-                acc += l2.key;
+            int sum = 0;
+            for (ListItem<Integer> item = l2; item != null; item = item.next) {
+                sum += item.key;
             }
-            return acc == 0 ? 0 : acc > 0 ? v : -v;
+            if (sum == 0) {
+                return 0;
+            } else if (sum > 0) {
+                return v;
+            } else {
+                return -v;
+            }
         }
 
         public ListItem<Integer> foo(ListItem<Integer> l1, ListItem<Integer> l2) {
-            ListItem<Integer> newHead = null;
-            for (
-                ListItem<Integer> p1 = l1, p2 = l2, tail = newHead;
-                p1 != null;
-                p1 = p1.next, p2 = p2 == null ? null : p2.next
-            ) {
-                Integer value = bar(p2, 0, p1.key);
-                ListItem<Integer> newItem = new ListItem<>(value);
-                if (tail == null) {
-                    newHead = tail = newItem;
-                    continue;
+            ListItem<Integer> head = null;
+            ListItem<Integer> tail = head;
+            ListItem<Integer> p1 = l1;
+            ListItem<Integer> p2 = l2;
+            while (p1 != null) {
+                Integer newVal = 0;
+                if (p2 != null) {
+                    newVal = bar(p2, 0, p1.key);
                 }
-                tail.next = newItem;
-                tail = tail.next;
+                ListItem<Integer> newItem = new ListItem<Integer>(newVal);
+                if (head == null) {
+                    head = newItem;
+                    tail = newItem;
+                } else {
+                    tail.next = newItem;
+                    tail = tail.next;
+                }
+                p1 = p1.next;
+                if (p2 != null) {
+                    p2 = p2.next;
+                }
             }
-            return newHead;
+            return head;
+
         }
     }
 
     public static class WithIterator {
         public Integer bar(Iterator<Integer> l2, Integer acc, Integer v) {
+            int sum = 0;
             while (l2.hasNext()) {
-                acc += l2.next();
+                sum += l2.next();
             }
-            return acc == 0 ? 0 : acc > 0 ? v : -v;
+            if (sum == 0) {
+                return 0;
+            } else if (sum > 0) {
+                return v;
+            } else {
+                return -v;
+            }
         }
 
+
         public List<Integer> foo(List<Integer> l1, List<Integer> l2) {
-            List<Integer> result = new LinkedList<>();
+            List<Integer> newList = new LinkedList<>();
+
+            Iterator<Integer> l1Iter = l1.iterator();
+
             int index = 0;
-            for (
-                Iterator<Integer> p1 = l1.iterator();
-                p1.hasNext();
-                index++
-            ) {
-                result.add(bar(l2.listIterator(index), 0, p1.next()));
+            while (l1Iter.hasNext()) {
+
+                Integer nextL1Val = l1Iter.next();
+                Integer newVal = 0;
+                if (index < l2.size()) {
+                    newVal = bar(l2.listIterator(index), 0, nextL1Val);
+                }
+                newList.add(newVal);
+
+                index++;
             }
-            return result;
+            return newList;
+
         }
     }
 }

@@ -34,7 +34,7 @@ public class Exercise_2 {
     }
 
     public class X2 {
-        public int m2(List<Integer> lst) throws Exc2 {
+        public int m2(List<Integer> lst) throws Exc3 {
             try{
                 return X.m(lst,Optional.of(1));
             }
